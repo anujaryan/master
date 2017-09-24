@@ -1,0 +1,6 @@
+A username is considered valid if all the following constraints are satisfied:
+
+The username consists of  to  characters inclusive, i.e., if the username consists of less than 8  or greater than 30 characters,
+then it is invalid username.
+
+  public static final String regularExpression = "\\b[a-zA-Z][a-zA-Z0-9_]{7,29}\\b";
