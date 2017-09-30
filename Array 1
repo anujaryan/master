@@ -1,0 +1,11 @@
+When we save each integer to its corresponding index in , we get .
+The locked code prints each array element on a new line from left to right.
+
+
+Integer [] a =new Integer[n];
+
+        for(int i = 0 ; i < n; i++){
+            int val = scan.nextInt();
+            // Fill array a here
+            a[i]=val;
+        }
