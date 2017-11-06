@@ -1,0 +1,43 @@
+MD5 (Message-Digest algorithm 5) is a widely-used cryptographic hash function with a -bit hash value. Here are some common uses for MD5:
+
+To store a one-way hash of a password.
+To provide some assurance that a transferred file has arrived intact.
+MD5 is one in a series of message digest algorithms designed by Professor Ronald Rivest of MIT (Rivest, ); however, the security of MD5 has been severely compromised, most infamously by the Flame malware in . 
+The CMU Software Engineering Institute essentially considers MD5 to be "cryptographically broken and unsuitable for further use".
+
+
+import java.io.*;
+import java.util.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.math.BigInteger;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        Scanner sc=new Scanner(System.in);
+        String m=sc.next();
+        
+        System.out.println(md5(m));
+     
+    }
+   
+public static String md5(String input) {
+		String md5 = null;
+		if(null == input) return null;
+		try {
+			//Create MessageDigest object for MD5
+			MessageDigest digest = MessageDigest.getInstance("MD5");
+			//Update input string in message digest
+			digest.update(input.getBytes(), 0, input.length());
+			//Converts message digest value in base 16 (hex) 
+			md5 = new BigInteger(1, digest.digest()).toString(16);
+		}
+		catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return md5;
+	}
+ 
+}
