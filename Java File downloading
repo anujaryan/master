@@ -1,0 +1,89 @@
+JAVA FILE DOWNLOADING THOURGH JASPER..............CODE...............
+
+	public void getTraineeReport(){
+		BufferedInputStream input = null;
+		BufferedOutputStream output = null;
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();
+		HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
+
+	
+		Map<String, Object> nitmap = new HashMap<String, Object>();
+		
+		
+		for(TraineeDetails td:traineelist){
+			td.setApplicantfullname(td.getFname().concat(" ").concat(td.getMname()!=null?td.getMname()+" ":"").concat(td.getLname()));
+			td.setApplicanteFathername(td.getFfname().concat(" ").concat(td.getFmname()!=null?td.getFmname()+" ":"").concat(td.getFlname()));
+			td.setApplicantMothername(td.getMfname().concat(" ").concat(td.getMmname()!=null?td.getMmname()+" ":"").concat(td.getMlname()));
+			
+			td.setAddress(td.getAddressone().concat(", ").concat(td.getAddresstwo()!=null?td.getAddresstwo()+" ":""));
+			
+		
+		}
+		
+		
+
+		try {
+
+                JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(traineelist);
+   
+                nitmap.put("ItemDataSource", itemsJRBean);
+		
+
+			String reportSource3 = FacesContext.getCurrentInstance().getExternalContext()
+					.getRealPath("/Reports/Trainee_report1.jasper");
+
+			System.out.println("-----JASPER-------" + reportSource3);
+            JasperPrint print2 = null;
+
+			if (reportSource3 != null) {
+				print2 = JasperFillManager.fillReport(reportSource3, nitmap, new JREmptyDataSource());
+			}
+			String strPdf = "NRDATraineeReport" + ".pdf";
+			java.awt.Image awtImage = net.sf.jasperreports.engine.JasperPrintManager.printPageToImage(print2, 0, 2.0f);
+			Document doc = new Document();
+			PdfWriter.getInstance(doc, new FileOutputStream(strPdf));
+			doc.open();
+			Image img = com.lowagie.text.Image.getInstance(awtImage, null);
+			img.scaleAbsolute(560f, 775f);
+			doc.add(img);
+			doc.close();
+			
+			
+			File file = new File(strPdf);
+
+			try {
+
+				input = new BufferedInputStream(new FileInputStream(strPdf), DEFAULT_BUFFER_SIZE);
+
+				/* response.reset(); */
+				response.setHeader("Content-Type", "application/pdf");
+				response.setHeader("Content-Length", String.valueOf(file.length()));
+				response.setHeader("Content-Disposition", "attachment; filename=\"" + strPdf + "\"");
+				output = new BufferedOutputStream(response.getOutputStream(), DEFAULT_BUFFER_SIZE);
+
+				byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+				int length;
+				while ((length = input.read(buffer)) > 0) {
+					output.write(buffer, 0, length);
+				}
+
+				output.flush();
+
+			} finally {
+				if (input != null) {
+					input.close();
+				}
+				if (output != null) {
+					output.close();
+				}
+			}
+		
+			facesContext.responseComplete();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	
+	}
