@@ -1,0 +1,7 @@
+ Set<String> set = new HashSet<String>(list);
+
+        System.out.println("Set values .....");
+        for (String temp : set){
+        	System.out.println(temp);
+        }
+    }
