@@ -1,0 +1,13 @@
+private Pattern pattern;
+    private Matcher matcher;
+    String regex="^[A-Za-z]{4}([0]{1})[A-Z0-9a-z]{6}$";
+	  public boolean validate(final String hex) {
+
+		    matcher = pattern.matcher(hex);
+		    return matcher.matches();
+
+		    }
+	
+	  public PatternMatching() {
+	        pattern = Pattern.compile(regex);
+	    }
