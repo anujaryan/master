@@ -1,0 +1,23 @@
+	Map<Integer, Integer> map = new HashMap<>();
+		int len = duplicate.length;
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i < len; i++) {
+			map.put(duplicate[i], map.getOrDefault(duplicate[i], 0) + 1);
+		}
+		int t = 0;
+		for (int i = 0; i < unique.length; i++) {
+			int val = unique[i];
+			if (map.containsKey(val)) {
+				int count = map.get(unique[i]);
+				while (count > 0) {
+					duplicate[t++] = val;
+					count--;
+				}
+			}
+		}
+		Collections.sort(list);
+		for (int k : list) {
+			duplicate[t++] = k;
+		}
+
+		return duplicate;
